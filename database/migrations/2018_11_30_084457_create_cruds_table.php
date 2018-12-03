@@ -19,6 +19,8 @@ class CreateCrudsTable extends Migration
             $table->string('address');
             $table->string('contact');
             $table->string('section');
+            $table->string('email');
+            $table->string('image');
             $table->timestamps();
         });
     }

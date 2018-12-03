@@ -23,7 +23,8 @@
                                 <th>address</th>
                                 <th>contact</th>
                                 <th>section</th>
-                                <th colspan="2">action</th>
+                                <th>image</th>
+                                <th>action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -34,13 +35,16 @@
                                 <td>{{$student->address}}</td>
                                 <td>{{$student->contact}}</td>
                                 <td>{{$student->section}}</td>
+                                <td> <img src="{{ asset('/uploads/appsetting/' . $student->image) }}" style="width:100px; height:50px;" /> </td>
                                 <td>
-                                    <form action="{{ route('crud.destroy', $student->id) }}" method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                    <a href="{{ route('crud.edit', $student->id) }}" class="btn btn-success">Edit</a> /
-                                        <button class="btn btn-danger" type="submit" onclick="return confirm('are you sure ?')">Delete</button>
-                                    </form>
+                                    <div class="row">
+                                        <form action="{{ route('crud.destroy', $student->id) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <a href="{{ route('crud.edit', $student->id) }}" class="btn btn-success" >Edit</a> /
+                                            <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach

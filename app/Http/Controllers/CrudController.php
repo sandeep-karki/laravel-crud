@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Crud;
+use App\Mail\Register;
+use Mail;
+use \Input as Input;
 
 class CrudController extends Controller
 {
@@ -41,13 +44,27 @@ class CrudController extends Controller
             'name' => 'required|string',
             'address' => 'required',
             'contact' => 'required|numeric',
-            'section' => 'required|alpha'
+            'section' => 'required|alpha',
+            'email' => 'required|email',
+            'image' => 'required|file'
         ]);
-        Crud::create($request->all());
-        return redirect('/crud')->with('status', 'student added successfully');
 
+        $attributes=$request->all();
+        
+        //uploading image to database        
+        if ($request->hasfile('image')) {
+            $file = $request->file('image');
+                    $extension = $file->getClientOriginalExtension(); // getting image extension
+                    $filename = time() . '.' . $extension;
+                    $file->move('uploads/appsetting/', $filename);
+                }
 
-    }
+                $attributes['image']=$filename;
+                $student = Crud::create($attributes);
+                Mail::to($student)->send(new register($student));
+                return redirect('/crud')->with('status', 'student added successfully.Please check the email');
+
+            }
 
     /**
      * Display the specified resource.
@@ -104,4 +121,5 @@ class CrudController extends Controller
         $student->delete();
         return redirect('/crud')->with('status', 'student deleted successfully');
     }
+
 }
